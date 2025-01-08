@@ -1,0 +1,26 @@
+<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Médicaments / </span>Reste stock</h4>
+
+<div th:if="${success != null}" class="alert alert-success alert-dismissible" role="alert">
+  <small th:text="${success}"></small>  
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+<div class="card">
+  <h5 class="card-header">Poste des employé(e)s</h5>
+  <div class="table-responsive text-nowrap">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Médicament</th>
+          <th>Reste en stock</th>
+        </tr>
+      </thead>
+      <tbody class="table-border-bottom-0">
+        <tr th:each="stock : ${stocks}">
+          <td th:text="${stock[0]}"></td>
+          <td th:text="${stock[1]}"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

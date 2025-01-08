@@ -1,0 +1,89 @@
+<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Produits / </span>Nouveau médicament</h4>
+<div class="row">
+    <!-- Basic with Icons -->
+    <div class="col-xxl">
+      <div class="card mb-4 col-md-10">
+        <div class="card-header d-flex align-items-center justify-content-between">
+          <h5 class="mb-0">Ajouter un nouveau médicament</h5>
+          <small class="text-muted float-end">Merged input group</small>
+        </div>
+        <div class="card-body col-md-11">
+          <form th:action="@{/medicaments/save}" method="post">
+            <div>
+              <div class="row mb-3">
+                <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Nom</label> 
+                <div class="col-sm-10">
+                  <div class="input-group input-group-merge">
+                    <input type="text" class="form-control" name="nom" required/>
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Forme</label>
+                <div class="col-sm-10">
+                  <div class="input-group input-group-merge">
+                      <select class="form-control" name="idForme" required>
+                          <option th:each="forme : ${formes}" th:value="${forme.getIdForme()}">
+                            <p th:text="${forme.getNomForme()}"></p>
+                          </option>
+                      </select>
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Type</label>
+                <div class="col-sm-10">
+                  <div class="input-group input-group-merge">
+                      <select class="form-control" name="idTypeMed" required>
+                          <option th:each="type : ${typeMeds}" th:value="${type.getid_type_med()}">
+                            <p th:text="${type.getNomTypeMed()}"></p>
+                          </option>
+                      </select>
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-sm-2 form-label" for="basic-icon-default-message">Notice</label>
+                <div class="col-sm-10">
+                  <div class="input-group input-group-merge">
+                    <span id="basic-icon-default-message2" class="input-group-text">
+                      <i class="bx bx-comment"></i>
+                  </span>
+                    <textarea id="basic-icon-default-message" class="form-control" name="notice" required></textarea>
+                  </div>
+                  <div class="form-text">Ne pas oublier les informations du médicament: composition, dosage, ne pas mettre à porter des enfants.</div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="row mb-3">
+                <label class="col-sm-2 col-form-label" for="basic-icon-default-email">Prix</label>
+                <div class="col-sm-10">
+                  <div class="input-group input-group-merge">
+                    <input type="number" class="form-control" name="prix" required/>
+                    <span id="basic-icon-default-email2" class="input-group-text">en Ariary</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div th:if="${success != null}" class="alert alert-info alert-dismissible" role="alert">
+              <small th:text="${success}"></small>  
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <div th:if="${error != null}" class="alert alert-danger alert-dismissible" role="alert">
+              <small th:text="${error}"></small>  
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            
+            <div class="row justify-content-end">
+              <div class="col-sm-10">
+                <button type="submit" class="btn btn-success">Confirmer</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,269 @@
+<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Produits / </span>Liste</h4>
+
+<div th:if="${success != null}" class="alert alert-info alert-dismissible" role="alert">
+  <small th:text="${success}"></small>  
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+<small class="text-light fw-semibold">Filtrer par : </small>
+<div class="col-lg-4 col-md-6 card-body" style="display:flex; gap:10px;">
+    <div class="mt-3">
+      <a th:href="@{/medicaments/filterasc}">
+        <button type="button" class="btn btn-outline-info">A - Z</button>
+      </a>
+    </div>
+    <div class="mt-3">
+      <a th:href="@{/medicaments/filterdesc}">
+        <button type="button" class="btn btn-outline-info">Z - A</button>
+      </a>
+    </div>
+    
+  <div class="mt-3">
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#filtre_type">
+      Type
+    </button>
+    <!-- Modal -->
+    <div class="modal fade" id="filtre_type" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalCenterTitle">Filtre</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          
+          <form th:action="@{/medicaments/filterbytype}" method="get">
+            <div class="modal-body">
+              <div class="row">
+                <div class="col mb-3">
+                  <label for="nameWithTitle" class="form-label">Type de médicament</label>
+                  <select class="form-control" name="idTypeMed" required>
+                    <option th:each="type : ${typeMeds}" th:value="${type.getid_type_med()}">
+                      <p th:text="${type.getNomTypeMed()}"></p>
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
+              <button type="submit" class="btn btn-primary">Confirmer</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="mt-3">
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#filtre_search">
+      Rechercher
+    </button>
+    <!-- Modal -->
+    <div class="modal fade" id="filtre_search" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalCenterTitle">Filtre</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          
+          <form th:action="@{/medicaments/search}" method="get">
+            <div class="modal-body">
+              <div class="row">
+                <div class="col mb-3">
+                  <label for="nameWithTitle" class="form-label">Maladie traité</label>
+                  <select class="form-control" name="idMaladie" required>
+                    <option th:each="mal : ${maladies}" th:value="${mal.getId_Maladie()}">
+                      <p th:text="${mal.getNom_maladie()}"></p>
+                    </option>
+                  </select>
+                </div>
+                <div class="col mb-3">
+                  <label for="nameWithTitle" class="form-label">Age patient entre</label>
+                  <select class="form-control" name="idPatient" required>
+                    <option th:each="patient : ${patients}" th:value="${patient.getIdPatient()}">
+                      <p th:text="${patient.getAge()}"></p> ans
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
+              <button type="submit" class="btn btn-primary">Confirmer</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="mt-3">
+    <!-- 
+    <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#modalCenter">
+      Prix
+    </button>
+
+    <div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalCenterTitle">Filtre</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="row g-2">
+              <div class="col mb-0">
+                <label for="emailWithTitle" class="form-label">Minimum</label>
+                <input type="number" class="form-control"/>
+              </div>
+              <div class="col mb-0">
+                <label for="dobWithTitle" class="form-label">Maximum</label>
+                <input type="number" class="form-control"/>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+              Annuler
+            </button>
+            <button type="button" class="btn btn-primary">Confirmer</button>
+          </div>
+        </div>
+      </div>
+    </div>-->
+  </div>
+</div>
+
+
+
+<div class="card">
+  <h5 class="card-header">Médicaments</h5>
+  <div class="table-responsive text-nowrap">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Type de médicament</th>
+          <th>Forme</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody class="table-border-bottom-0">
+        <tr th:each="med : ${medicaments}">
+          <td th:text="${med.getnom_med()}"></td>
+          <td th:text="${med.getForme().getNomForme()}"></td>
+          <td th:text="${med.getTypeMedicament().getNomTypeMed()}"></td>
+          <td>
+            <div class="mt-3">
+              <!-- 
+                <button type="button" class="btn btn-warning" data-bs-toggle="modal" th:attr="data-bs-target='#filtre_' + ${med.getid_med()}">Modifier</button>
+              -->
+              
+              <a th:href="@{/medicaments/delete/{id}(id=${med.getid_med()})}">
+                <button type="button" class="btn btn-danger">
+                  Supprimer
+                </button>
+              </a>
+
+              <!-- 
+              <a th:href="@{/medicaments/detail/{id}(id=${med.getid_med()})}">
+                <button type="button" class="btn btn-outline-info">
+                  Voir plus
+                </button>
+              </a> -->
+              
+              <div class="modal fade" th:id="'filtre_' + ${med.getid_med()}" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <form>
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="modalCenterTitle">Modifier un médicament</h5>
+                        <button
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="row">
+                            <div class="row mb-3">
+                              <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Nom</label>
+                              <div class="col-sm-10">
+                                <div class="input-group input-group-merge">
+                                  <input type="text" class="form-control" th:value="${med.getnom_med()}"/>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row mb-3">
+                              <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Type</label>
+                              <div class="col-sm-10">
+                                <div class="input-group input-group-merge">
+                                    <select class="form-control">
+                                        <option>ok1</option>
+                                        <option>ok2</option>
+                                        <option>ok3</option>
+                                    </select>
+                                </div>
+                              </div>
+                            </div>
+                            <!-- <div class="row mb-3">
+                              <label class="col-sm-2 col-form-label" for="basic-icon-default-email">Prix</label>
+                              <div class="col-sm-10">
+                                <div class="input-group input-group-merge">
+                                  <input type="number" class="form-control"/>
+                                  <span id="basic-icon-default-email2" class="input-group-text">en Ariary</span>
+                                </div>
+                              </div>
+                            </div> -->
+                            <div class="row mb-3">
+                              <label class="col-sm-2 form-label" for="basic-icon-default-message">Notice</label>
+                              <div class="col-sm-10">
+                                <div class="input-group input-group-merge">
+                                  <span id="basic-icon-default-message2" class="input-group-text">
+                                    <i class="bx bx-comment"></i>
+                                </span>
+                                </span>
+                                  <textarea id="basic-icon-default-message" class="form-control" th:text="${med.getNotice()}"></textarea>
+                                </div>
+                                <div class="form-text">Ne pas oublier les informations du médicament.</div>
+                              </div>
+                            </div>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                          Annuler
+                        </button>
+                        <button type="button" class="btn btn-success">Confirmer</button>
+                      </div> 
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

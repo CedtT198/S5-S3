@@ -1,0 +1,118 @@
+<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Produits / Liste / </span>Détails</h4>
+<div class="card mb-4">
+  <div class="card-body">
+    <small class="text-light fw-semibold">Voyez ici les informations utiles pour un médicament</small>
+    <div class="demo-inline-spacing mt-3">
+      <div class="list-group list-group-horizontal-md text-md-center">
+        <a
+          class="list-group-item list-group-item-action active"
+          id="home-list-item"
+          data-bs-toggle="list"
+          href="#details" 
+          >A propos</a>
+        <a
+          class="list-group-item list-group-item-action"
+          id="profile-list-item"
+          data-bs-toggle="list"
+          href="#histo_prix"
+          >Historique des prix</a>
+      </div>
+      <div class="tab-content px-0 mt-0">
+        <div th:if="${error != null}" class="alert alert-danger alert-dismissible" role="alert">
+          <small th:text="${error}"></small>  
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${success1 != null}" class="alert alert-success alert-dismissible" role="alert">
+          <small th:text="${success1}"></small>  
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div class="tab-pane fade show active" id="details">
+          <div class="container">
+            <h5 class="display-5 mb-0" th:text="${med.getnom_med()}"></h5></br>
+            <p class="display-7 mb-0" th:text="${med.getTypeMedicament().getNomTypeMed()}"></p></br>
+            <p class="display-7 mb-0">Notice :
+              <p class="display-7 mb-0" th:text="${med.getNotice()}"></p></br>
+            </p>
+            <p class="display-7 mb-0"></p>
+            <p></p>
+            <h6 class="display-6 mb-0">Prix <small th:text="${prixActuel.getMontant()}"></small> Ariary</h6></br>
+            
+            <div class="mt-3">
+              <!-- Button trigger modal -->
+              <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#new_price">Nouveau prix</button>
+              <!-- Modal -->
+              <div class="modal fade" id="new_price" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="modalCenterTitle">Nouveau prix du médicament</h5>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    
+                    <form th:action="@{/prixMed/save}" method="post">
+                      <div class="modal-body">
+                        <div class="row">
+                          <div class="col mb-3">
+                            <label for="montant" class="form-label">Montant</label>
+                            <input type="hidden" class="form-control" name="idMed" th:value="${med.getid_med()}"/>
+                            <input type="number" class="form-control" name="montant"/>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
+                        <button type="submit" class="btn btn-primary">Valider changement</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="tab-pane fade" id="histo_prix">
+          <div th:if="${success != null}" class="alert alert-info alert-dismissible" role="alert">
+            <small th:text="${success}"></small>  
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          <div class="card">
+            <h5 class="card-header">Historique des changements de prix</h5>
+            <div class="table-responsive text-nowrap">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Prix (en Ariary)</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody class="table-border-bottom-0">
+                  <tr th:each="pm : ${listePrixMed}">
+                    <td th:text="${pm.getDatePrix()}"></td>
+                    <td th:text="${pm.getMontant()}"></td>
+                    <td></td>
+                    <td>
+                      <div class="mt-3">
+                        <form th:action="@{/prixMed/delete}" method="get">
+                          <input type="hidden" name="idMed" th:value="${med.getid_med()}">
+                          <input type="hidden" name="idPrixMed" th:value="${pm.getIdPrixMed()}">
+                          <button type="submit" class="btn btn-danger">Supprimer</button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

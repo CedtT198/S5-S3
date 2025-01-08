@@ -1,0 +1,43 @@
+<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Employé(e)s / </span>Liste</h4>
+
+<small class="text-light fw-semibold">Filtrer par : </small>
+<div class="col-lg-4 col-md-6 card-body" style="display:flex; gap:10px;">
+  <div class="mt-3">
+    <a th:href="@{/personnel/filterasc}">
+      <button type="button" class="btn btn-outline-info">A - Z</button>
+    </a>
+  </div>
+  <div class="mt-3">
+    <a th:href="@{/personnel/filterdesc}">
+      <button type="button" class="btn btn-outline-info">Z - A</button>
+    </a>
+  </div>
+</div>
+
+<div class="card">
+  <h5 class="card-header">Personnel</h5>
+  <div class="table-responsive text-nowrap">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Nom & prénom</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody class="table-border-bottom-0">
+        <tr th:each="perso : ${personnels}">
+          <td th:text="${perso.getNomComplet()}"></td>
+          <td>
+            <div class="mt-3">
+              <a th:href="@{/personnel/detail/{id}(id=${perso.getid_personnel()})}">
+              <button type="button" class="btn btn-outline-info">
+                  Voir plus
+                </button>
+              </a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

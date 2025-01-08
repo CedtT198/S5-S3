@@ -1,0 +1,316 @@
+<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Employé(e)s / Liste / </span>Détails</h4>
+<div class="card mb-4">
+    <h5 class="card-header">
+        Profile détails</br>
+        <small class="text-light fw-semibold">Voyez ici les informations utiles pour un employé(e).</small>
+    </h5>
+    <!-- Account -->
+    <div class="card-body">
+      <div class="d-flex align-items-start align-items-sm-center gap-4">
+        <img src="/img/no-profile.jpg" alt="user-avatar" class="d-block rounded" height="150" width="150"/>
+        <div class="button-wrapper">
+          <h4 class="display-4 mb-4" th:text="${personnel.getNomComplet()}"></h4>
+          <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#update">
+              <span class="d-none d-sm-block">Modifier</span>
+          </button>
+          
+          <div class="modal fade" id="update" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <form th:action="@{/personnel/update/}" method="post" th:object="${personnel}">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="modalCenterTitle">Modifier information de l'employé(e)</h5>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Nom</label>
+                        <div class="col-sm-10">
+                        <div class="input-group input-group-merge">
+                            <input type="text" class="form-control" required th:value="${personnel.getNom()}"/>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Prénom</label>
+                        <div class="col-sm-10">
+                        <div class="input-group input-group-merge">
+                            <input type="text" class="form-control" required th:value="${personnel.getPrenom()}"/>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Date de naissance</label>
+                        <div class="col-sm-10">
+                        <div class="input-group input-group-merge">
+                            <input type="date" class="form-control" disabled th:value="${personnel.getDateNaissance()}"/>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Provenance</label>
+                        <div class="col-sm-10">
+                        <div class="input-group input-group-merge">
+                            <select class="form-control" th:value="${personnel.getVilleNaissance()}">
+                                <option value="Antananarivo">Antananarivo</option>
+                                <option value="Antsiranana">Antsiranana</option>
+                                <option value="Toamasina">Toamasina</option>
+                                <option value="Mahajanga">Mahajanga</option>
+                                <option value="Fianarantsoa">Fianarantsoa</option>
+                                <option value="Toliara">Toliara</option>
+                            </select>
+                        </div>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                      Annuler
+                    </button>
+                    <button type="button" class="btn btn-success">Confirmer</button>
+                  </div> 
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <div class="card-body">
+    <div class="demo-inline-spacing mt-3">
+      <div class="list-group list-group-horizontal-md text-md-center">
+        <a
+          class="list-group-item list-group-item-action active"
+          id="home-list-item"
+          data-bs-toggle="list"
+          href="#details"
+          >Informations personnelle</a>
+        <a
+          class="list-group-item list-group-item-action"
+          id="profile-list-item"
+          data-bs-toggle="list"
+          href="#histo_salaire"
+          >Salaire</a>
+          <a
+          class="list-group-item list-group-item-action"
+          id="profile-list-item"
+          data-bs-toggle="list"
+          href="#histo_poste"
+          >Postes</a>
+      </div>
+      <div class="tab-content px-0 mt-0">
+        <div class="tab-pane fade show active" id="details">
+          <div class="container">
+            <p class="fw-bold">id : <span class="text-muted fw-light" th:text="${personnel.getid_personnel()}"></span></p>
+            <p class="fw-bold">Date de naissance : <span class="text-muted fw-light" th:text="${personnel.getDateNaissance()}">date</span></p>
+            <p class="fw-bold">Ville de naissance : <span class="text-muted fw-light" th:text="${personnel.getVilleNaissance()}">ville</span></p>
+            <p class="fw-bold">Salaire actuel : <span class="text-muted fw-light" th:text="${salaire.getMontantSalaire()}"></span> en Ariary</p>
+            <p class="fw-bold">Poste actuel : <span class="text-muted fw-light" th:text="${histoPoste.getPoste().getNomPoste()}"></span></p>
+          </div>
+        </div>
+
+
+        <div class="tab-pane fade" id="histo_salaire">
+            <div class="container">
+                <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#filtre1">
+                    <span class="d-none d-sm-block">Nouveau salaire</span>
+                </button>
+            </div></br>
+            
+            <div class="modal fade" id="filtre1" tabindex="-1" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <form th:action="@{/salaire/save}" method="post">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="modalCenterTitle">Promotion salariale</h5>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="row">
+                          <div class="row mb-3">
+                            <p class="fw-bold">Actuel : <span class="text-muted fw-light" th:text="${salaire.getMontantSalaire()}"></span></p>
+                            <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Nouveau montant</label>
+                            <div class="col-sm-10">
+                              <div class="input-group input-group-merge">
+                                <input type="hidden" name="idPerso" th:value="${personnel.getid_personnel()}"/>
+                                <input type="number" class="form-control" name="montant" required/>
+                                <span id="basic-icon-default-email2" class="input-group-text">en Ariary</span>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        Annuler
+                      </button>
+                      <button type="submit" class="btn btn-success">Confirmer</button>
+                    </div> 
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <div th:if="${success != null}" class="alert alert-info alert-dismissible" role="alert">
+              <small th:text="${success}"></small>  
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <div th:if="${error != null}" class="alert alert-danger alert-dismissible" role="alert">
+              <small th:text="${error}"></small>  
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+    
+          <div class="card">
+            <h5 class="card-header">Historique des promotions salariales</h5>
+            <div class="table-responsive text-nowrap">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Montant (en Ariary)</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody class="table-border-bottom-0">
+                  <tr th:each="salaire : ${salaires}">
+                    <td th:text="${salaire.getDateSalaire()}"></td>
+                    <td th:text="${salaire.getMontantSalaire()}"></td>
+                    <td>
+                      <div class="mt-3">
+                        <a th:href="@{/salaire/delete/{id}(id=${salaire.getIdSalaire()})}">
+                          <button type="button" class="btn btn-danger">
+                            Supprimer
+                          </button>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-pane fade" id="histo_poste">
+            <div class="container">
+                <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#filtre2">
+                    <span class="d-none d-sm-block">Nouveau poste</span>
+                </button>
+            </div></br>
+            
+            <div class="modal fade" id="filtre2" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <form th:action="@{/historique_poste/save}" method="post">
+                      <input type="hidden" name="idPerso" th:value="${personnel.getid_personnel()}"/>
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="modalCenterTitle">Promotion de poste</h5>
+                        <button
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="row">
+                            <div class="row mb-3">
+                              <p class="fw-bold">Actuel : <span class="text-muted fw-light" th:text="${histoPoste.getPoste().getNomPoste()}"></span></p>
+                              <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Nouveau poste</label>
+                              <div class="col-sm-10">
+                                <div class="input-group input-group-merge">
+                                  <select class="form-control" name="idPoste" required>
+                                    <option th:each="poste : ${postes}" th:value="${poste.getid_poste()}">
+                                      <p th:text="${poste.getNomPoste()}"></p>
+                                    </option>
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                          <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Date de début</label>
+                            <div class="col-sm-10">
+                              <div class="input-group input-group-merge">
+                                <input type="date" class="form-control" name="dateDebut" required/>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Date de fin</label>
+                            <div class="col-sm-10">
+                              <div class="input-group input-group-merge">
+                                <input type="date" class="form-control" name="dateFin" required/>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                          Annuler
+                        </button>
+                        <button type="submit" class="btn btn-success">Confirmer</button>
+                      </div> 
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+              <div th:if="${success2 != null}" class="alert alert-success alert-dismissible" role="alert">
+                <small th:text="${success2}"></small>  
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+  
+              <div th:if="${error2 != null}" class="alert alert-danger alert-dismissible" role="alert">
+                <small th:text="${error2}"></small>  
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              
+          <div class="card">
+            <h5 class="card-header">Historique des changements de poste</h5>
+            <div class="table-responsive text-nowrap">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Poste</th>
+                    <th>Date debut</th>
+                    <th>Date fin</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody class="table-border-bottom-0">
+                  <tr th:each="hp : ${histoPostes}">
+                    <td th:text="${hp.getPoste().getNomPoste()}"></td>
+                    <td th:text="${hp.getdate_debut()}"></td>
+                    <td th:text="${hp.getdate_fin()}"></td>
+                    <td>
+                      <div class="mt-3">
+                        <a th:href="@{/historique_poste/delete/{id}(id=${hp.getid_historique_poste()})}">
+                          <button type="button" class="btn btn-danger">
+                            Supprimer
+                          </button>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

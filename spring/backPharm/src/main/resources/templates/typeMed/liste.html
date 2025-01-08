@@ -1,0 +1,35 @@
+<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Type  / </span>Liste</h4>
+
+<div th:if="${success != null}" class="alert alert-success alert-dismissible" role="alert">
+  <small th:text="${success}"></small>  
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+<div class="card">
+  <h5 class="card-header">Types de médicaments</h5>
+  <div class="table-responsive text-nowrap">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>id</th>
+          <th>Nom</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody class="table-border-bottom-0">
+        <tr th:each="tm : ${typeMed}">
+          <td th:text="${tm.getid_type_med()}"></td>
+          <td th:text="${tm.getNomTypeMed()}"></td>
+          <td>
+            <div class="mt-3">
+              <!-- Button trigger modal -->
+              <a th:href="@{/typeMed/delete/{id}(id=${tm.getid_type_med()})}">
+                <button type="button" class="btn btn-danger">Supprimer</button>
+              </a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

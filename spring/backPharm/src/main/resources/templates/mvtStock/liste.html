@@ -1,0 +1,168 @@
+<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Médicaments / </span>Historique mouvement</h4>
+
+<div th:if="${success != null}" class="alert alert-info alert-dismissible" role="alert">
+  <small th:text="${success}"></small>  
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+<small class="text-light fw-semibold">Filtrer par : </small>
+<div class="col-lg-4 col-md-6 card-body" style="display:flex; gap:10px;">
+  <div class="mt-3">
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#filtre1">
+      Type
+    </button>
+    <!-- Modal -->
+    <div class="modal fade" id="filtre1" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <form th:action="@{/mouvementStock/filter}" method="get">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modalCenterTitle">Filtre</h5> 
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col mb-3">
+                  <label for="nameWithTitle" class="form-label">Type de mouvement de stock</label>
+                  <select class="form-control" name="idType">
+                    <option value="1">Input</option>
+                    <option value="2">Output</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                Annuler
+              </button>
+              <button type="submit" class="btn btn-primary">Confirmer</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="card">
+  <h5 class="card-header">Mouvement de stock</h5>
+  <div class="table-responsive text-nowrap">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Nom du médicament</th>
+          <th>Quantité</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody class="table-border-bottom-0">
+        <tr th:each="ms : ${mouvementStocks}">
+          <td th:text="${ms.getDateMvtStock()}"></td>
+          <td th:text="${ms.getMedicament().getnom_med()}"></td>
+
+          <small th:if="${ms.getTypeMouvementStock().getIdTypeMvtStock() == 1}">
+            <td>
+              <span class="badge bg-success rounded-pill">+
+                <small th:text="${ms.getQuantite()}"></small>
+              </span>
+            </td>
+          </small>
+          <small th:if="${ms.getTypeMouvementStock().getIdTypeMvtStock() == 2}">
+            <td>
+              <span class="badge bg-danger rounded-pill">-
+                <small th:text="${ms.getQuantite()}"></small>
+              </span>
+            </td>
+          </small>
+          <td>
+            <div class="mt-3">
+              <!-- Button trigger modal -->
+              <button type="button" class="btn btn-warning" data-bs-toggle="modal" th:attr="data-bs-target='#filtre_' + ${ms.getIdMvtStock()}">Modifier</button>
+              
+              <a th:href="@{/mouvementStock/delete/{id}(id=${ms.getIdMvtStock()})}">
+                <button type="button" class="btn btn-danger">
+                  Supprimer
+                </button>
+              </a>
+              
+              <div class="modal fade"  th:id="'filtre_' + ${ms.getIdMvtStock()}" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <form>
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="modalCenterTitle">Modifier un mouvement</h5>
+                        <button
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="row">
+                            <div class="row mb-3">
+                              <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Date</label>
+                              <div class="col-sm-10">
+                                <div class="input-group input-group-merge">
+                                  <input type="date" class="form-control"/>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row mb-3">
+                              <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Type</label>
+                              <div class="col-sm-10">
+                                <div class="input-group input-group-merge">
+                                    <select class="form-control">
+                                        <option>Entrée</option>
+                                        <option>Sortie</option>
+                                    </select>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row mb-3">
+                              <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Médicament</label>
+                              <div class="col-sm-10">
+                                <div class="input-group input-group-merge">
+                                    <select class="form-control">
+                                        <option>Med1</option>
+                                        <option>Med2</option>
+                                        <option>Med3</option>
+                                    </select>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row mb-3">
+                              <label class="col-sm-2 col-form-label" for="basic-icon-default-email">Quantité</label>
+                              <div class="col-sm-10">
+                                <div class="input-group input-group-merge">
+                                  <input type="number" class="form-control"/>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                          Annuler
+                        </button>
+                        <button type="button" class="btn btn-success">Confirmer</button>
+                      </div> 
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

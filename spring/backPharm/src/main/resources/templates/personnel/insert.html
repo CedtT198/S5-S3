@@ -1,0 +1,93 @@
+<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Employé(e)s / </span>Nouvel(e) employé(e)</h4>
+<div class="row">
+    <!-- Basic with Icons -->
+    <div class="col-xxl">
+      <div class="card mb-4 col-md-10">
+        <div class="card-header d-flex align-items-center justify-content-between">
+          <h5 class="mb-0">Ajouter un nouvel employé</h5>
+          <small class="text-muted float-end">Merged input group</small>
+        </div>
+        <div class="card-body col-md-11">
+          <form th:action="@{/personnel/save}" method="post" th:object="${personnel}">
+            <div class="row mb-3">
+              <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Nom</label>
+              <div class="col-sm-10">
+                <div class="input-group input-group-merge">
+                  <input type="text" class="form-control" name="nom" th:field="*{nom}" required/>
+                </div>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Prénom</label>
+              <div class="col-sm-10">
+                <div class="input-group input-group-merge">
+                  <input type="text" class="form-control" name="prenom" th:field="*{prenom}" required/>
+                </div>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Date de naissance</label>
+              <div class="col-sm-10">
+                <div class="input-group input-group-merge">
+                  <input type="date" class="form-control" name="date_naissance" th:field="*{dateNaissance}" required/>
+                </div>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Provenance</label>
+              <div class="col-sm-10">
+                <div class="input-group input-group-merge">
+                    <select class="form-control" name="provenance" th:field="*{villeNaissance}" required>
+                        <option value="Antananarivo">Antananarivo</option>
+                        <option value="Antsiranana">Antsiranana</option>
+                        <option value="Toamasina">Toamasina</option>
+                        <option value="Mahajanga">Mahajanga</option>
+                        <option value="Fianarantsoa">Fianarantsoa</option>
+                        <option value="Toliara">Toliara</option>
+                    </select>
+                </div>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Poste</label>
+              <div class="col-sm-10">
+                <div class="input-group input-group-merge">
+                    <select class="form-control" name="idPoste" required>
+                      <option th:each="poste : ${postes}" th:value="${poste.getid_poste()}">
+                        <p th:text="${poste.getNomPoste()}"></p>
+                      </option>
+                    </select>
+                </div>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label class="col-sm-2 col-form-label" for="basic-icon-default-email">Salaire de départ</label>
+              <div class="col-sm-10">
+                <div class="input-group input-group-merge">
+                  <input type="number" class="form-control" name="salaire" required/>
+                  <span id="basic-icon-default-email2" class="input-group-text">en Ariary</span>
+                </div>
+                <div class="form-text">Salaire ne devant pas être inférieure à 1.280.000 Ar.</div>
+              </div>
+            </div>
+            
+            <div th:if="${success != null}" class="alert alert-info alert-dismissible" role="alert">
+              <small th:text="${success}"></small>  
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <div th:if="${error != null}" class="alert alert-danger alert-dismissible" role="alert">
+              <small th:text="${error}"></small>  
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <div class="row justify-content-end">
+              <div class="col-sm-10">
+                <button type="submit" class="btn btn-success">Confirmer</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>

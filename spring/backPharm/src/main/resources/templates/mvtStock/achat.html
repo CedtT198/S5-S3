@@ -1,0 +1,58 @@
+<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Achat(s)</span></h4>
+<div class="row">
+    <!-- Basic with Icons -->
+    <div class="col-xxl">
+      <div class="card mb-4 col-md-8">
+        <div class="card-header d-flex align-items-center justify-content-between">
+          <small class="text-muted float-end">Merged input group</small>
+        </div>
+        <div class="card-body col-md-11">
+          <form th:action="@{/mouvementStock/saveachat}" method="post" th:object="${mouvementStock}">
+            <div class="row mb-3">
+              <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Date</label>
+              <div class="col-sm-10">
+                <div class="input-group input-group-merge">
+                  <input type="date" class="form-control" th:field="*{dateMvtStock}" required/>
+                </div>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Médicament</label>
+              <div class="col-sm-10">
+                <div class="input-group input-group-merge">
+                  <select class="form-control" th:field="*{medicament}" required>
+                      <option th:each="med : ${medicaments}" th:value="${med.getid_med()}">
+                      <p th:text="${med.getnom_med()}"></p>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label class="col-sm-2 col-form-label" for="basic-icon-default-email">Quantité</label>
+              <div class="col-sm-10">
+                <div class="input-group input-group-merge">
+                  <input type="number" class="form-control" th:field="*{quantite}" required/>
+                </div>
+              </div>
+            </div>
+
+            <div th:if="${success != null}" class="alert alert-info alert-dismissible" role="alert">
+              <small th:text="${success}"></small>  
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <div th:if="${error != null}" class="alert alert-danger alert-dismissible" role="alert">
+              <small th:text="${error}"></small>  
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <div class="row justify-content-end">
+              <div class="col-sm-10">
+                <button type="submit" class="btn btn-success">Confirmer</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
