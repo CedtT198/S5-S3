@@ -1,0 +1,83 @@
+<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Médicaments / Produits / </span>Liste conseillé</h4>
+
+<div th:if="${success != null}" class="alert alert-success alert-dismissible" role="alert">
+  <small th:text="${success}"></small>  
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+
+<small class="text-light fw-semibold">Filtrer par : </small>
+<div class="col-lg-12 col-md-12 card-body" style="display:flex; gap:10px;">
+  <div class="mt-3">
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#filtre1">
+      Mois et année
+    </button>
+    <!-- Modal -->
+    <div class="modal fade" id="filtre1" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <form th:action="@{/conseils/filterdate}" method="get">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modalCenterTitle">Filtre</h5> 
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col mb-3">
+                  <label for="nameWithTitle" class="form-label">Date</label>
+                  <input type="date" class="form-control" name="date_conseil" required>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                Annuler
+              </button>
+              <button type="submit" class="btn btn-primary">Confirmer</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h5 class="card-header">Liste</h5>
+  <div class="table-responsive text-nowrap">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>id</th>
+          <th>Nom</th>
+          <th>Date</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody class="table-border-bottom-0">
+        <tr th:each="c : ${conseils}">
+          <td th:text="${c.getIdConseil()}"></td>
+          <td th:text="${c.getMedicament().getnom_med()}"></td>
+          <td th:text="${c.getDateConseil()}"></td>
+          <td>
+            <div class="mt-3">
+              <!-- Button trigger modal -->
+              <a th:href="@{/conseils/delete/{id}(id=${c.getIdConseil()})}">
+                <button type="button" class="btn btn-outline-danger">
+                  Supprimer
+                  <i class="bx bx-trash-alt"></i>
+                </button>
+              </a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

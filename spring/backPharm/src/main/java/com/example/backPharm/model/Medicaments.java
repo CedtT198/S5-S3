@@ -14,8 +14,8 @@ public class Medicaments {
     @Column(name = "nom_med", nullable = false, length = 50)
     private String nomMed;
 
-    @Column(name = "notice", nullable = false, length = 1000)
-    private String notice;
+    @Column(name = "detail", nullable = false, length = 1000)
+    private String detail;
 
     @ManyToOne
     @JoinColumn(name = "id_type_med", nullable = false)
@@ -27,9 +27,9 @@ public class Medicaments {
     
 
     public Medicaments() {}
-    public Medicaments(String nom_med, String notice, TypeMedicament typeMedicament) {
+    public Medicaments(String nom_med, String detail, TypeMedicament typeMedicament) {
         this.nomMed = nom_med;
-        this.notice = notice;
+        this.detail = detail;
         this.typeMedicament = typeMedicament;
     }
 
@@ -57,12 +57,12 @@ public class Medicaments {
         this.nomMed = nom_med;
     }
 
-    public String getNotice() {
-        return notice;
+    public String getDetail() {
+        return detail;
     }
 
-    public void setNotice(String notice) {
-        this.notice = notice;
+    public void setNotice(String detail) {
+        this.detail = detail;
     }
 
     public TypeMedicament getTypeMedicament() {

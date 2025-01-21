@@ -3,12 +3,12 @@ package com.example.backPharm.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "posologie")
+@Table(name = "notice")
 public class Posologie {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_posologie")
+    @Column(name = "id_notice")
     private Integer idPosologie;
 
     @Column(name = "dose", nullable = false)
@@ -25,10 +25,6 @@ public class Posologie {
     private Maladie maladie;
 
     @ManyToOne
-    @JoinColumn(name = "id_forme", referencedColumnName = "id_forme", nullable = false)
-    private Forme forme;
-
-    @ManyToOne
     @JoinColumn(name = "id_patient", referencedColumnName = "id_patient", nullable = false)
     private Patient patient;
 
@@ -38,12 +34,11 @@ public class Posologie {
 
     public Posologie() {}
 
-    public Posologie(Integer dose, Double frequence, Integer duree, Maladie maladie, Forme forme, Patient patient, Medicaments medicament) {
+    public Posologie(Integer dose, Double frequence, Integer duree, Maladie maladie, Patient patient, Medicaments medicament) {
         this.dose = dose;
         this.frequence = frequence;
         this.duree = duree;
         this.maladie = maladie;
-        this.forme = forme;
         this.patient = patient;
         this.medicament = medicament;
     }
@@ -87,14 +82,6 @@ public class Posologie {
 
     public void setMaladie(Maladie maladie) {
         this.maladie = maladie;
-    }
-
-    public Forme getForme() {
-        return forme;
-    }
-
-    public void setForme(Forme forme) {
-        this.forme = forme;
     }
 
     public Patient getPatient() {

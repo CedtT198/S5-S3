@@ -11,7 +11,8 @@ import org.springframework.stereotype.Repository;
 public interface MedicamentsRepository extends JpaRepository<Medicaments, Integer> {
     public List<Medicaments> findAllByOrderByNomMedAsc();
     public List<Medicaments> findAllByOrderByNomMedDesc();
-    public List<Medicaments> findAllByTypeMedicament_IdTypeMed(Integer id);
+    public List<Medicaments> findAllByTypeMedicament_IdTypeMed(Integer idtype);
+    public List<Medicaments> findAllByForme_IdForme(Integer idforme);
 
     @Query("SELECT p.medicament FROM Posologie p WHERE p.maladie.id_Maladie = :idMaladie AND p.patient.idPatient = :idPatient")
     List<Medicaments> findMedicamentsByMaladieAndPatient(@Param("idMaladie") Integer idMaladie, @Param("idPatient") Integer idPatient);

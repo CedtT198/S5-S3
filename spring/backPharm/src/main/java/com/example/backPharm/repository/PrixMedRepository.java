@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PrixMedRepository extends JpaRepository<PrixMed, Integer> {
     List<PrixMed> findByMedicamentIdMed(Integer idMed);
+    // List<PrixMed> findAllByOrderDatePrixDesc();
+
     @Query("SELECT p FROM PrixMed p WHERE p.medicament.id = :idMed ORDER BY p.datePrix DESC LIMIT 1")
     PrixMed findLatestPrixByMedicament(@Param("idMed") Integer idMed);
 }

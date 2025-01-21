@@ -27,51 +27,66 @@
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         <div class="tab-pane fade show active" id="details">
-          <div class="container">
-            <h5 class="display-5 mb-0" th:text="${med.getnom_med()}"></h5></br>
-            <p class="display-7 mb-0" th:text="${med.getTypeMedicament().getNomTypeMed()}"></p></br>
-            <p class="display-7 mb-0">Notice :
-              <p class="display-7 mb-0" th:text="${med.getNotice()}"></p></br>
-            </p>
-            <p class="display-7 mb-0"></p>
-            <p></p>
-            <h6 class="display-6 mb-0">Prix <small th:text="${prixActuel.getMontant()}"></small> Ariary</h6></br>
-            
-            <div class="mt-3">
-              <!-- Button trigger modal -->
-              <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#new_price">Nouveau prix</button>
-              <!-- Modal -->
-              <div class="modal fade" id="new_price" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="modalCenterTitle">Nouveau prix du médicament</h5>
-                      <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                      ></button>
-                    </div>
-                    
-                    <form th:action="@{/prixMed/save}" method="post">
-                      <div class="modal-body">
-                        <div class="row">
-                          <div class="col mb-3">
-                            <label for="montant" class="form-label">Montant</label>
-                            <input type="hidden" class="form-control" name="idMed" th:value="${med.getid_med()}"/>
-                            <input type="number" class="form-control" name="montant"/>
+          <div class="container row">
+            <div class="col-md-6">  
+              <h5 class="display-5 mb-0" th:text="${med.getnom_med()}"></h5></br>
+              <p class="display-7 mb-0" th:text="${med.getTypeMedicament().getNomTypeMed()}"></p></br>
+              <strong class="display-7 mb-0">
+                Description :
+              </strong>
+                <small class="display-7 mb-0" th:text="${med.getDetail()}"></small></br>
+              <p class="display-7 mb-0"></p>
+              <p></p>
+              
+              <small th:if="${prixActuel != null}">
+                <h6 class="display-6 mb-0">Prix <small th:text="${prixActuel.getMontant()}"></small> Ariary</h6></br>
+              </small>
+              
+              <div class="mt-3">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#nouveau_prix">Nouveau prix</button>
+                <!-- Modal -->
+                <div class="modal fade" id="nouveau_prix" tabindex="-1" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="modalCenterTitle">Nouveau prix du médicament</h5>
+                        <button
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                      
+                      <form th:action="@{/prixMed/save}" method="post">
+                        <div class="modal-body">
+                          <div class="row">
+                            <div class="col mb-3">
+                              <label for="date" class="form-label">Date</label>
+                              <input type="date" class="form-control" name="date" required/>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col mb-3">
+                              <label for="montant" class="form-label">Montant</label>
+                              <input type="hidden" class="form-control" name="idMed" th:value="${med.getid_med()}"/>
+                              <input type="number" class="form-control" name="montant" placeholder="Somme en Ariary." required/>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
-                        <button type="submit" class="btn btn-primary">Valider changement</button>
-                      </div>
-                    </form>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
+                          <button type="submit" class="btn btn-success">Valider changement</button>
+                        </div>
+                      </form>
+                    </div>
                   </div>
                 </div>
               </div>
+            </div>
+            <div class="col-md-6">
+              <h5 class="display-5 mb-0">Notice</h5></br>
             </div>
           </div>
         </div>
@@ -96,14 +111,20 @@
                 <tbody class="table-border-bottom-0">
                   <tr th:each="pm : ${listePrixMed}">
                     <td th:text="${pm.getDatePrix()}"></td>
-                    <td th:text="${pm.getMontant()}"></td>
+
+                    <small th:if="${pm != null}">
+                      <td th:text="${pm.getMontant()}"></td>
+                    </small>
+                    
                     <td></td>
                     <td>
                       <div class="mt-3">
                         <form th:action="@{/prixMed/delete}" method="get">
                           <input type="hidden" name="idMed" th:value="${med.getid_med()}">
                           <input type="hidden" name="idPrixMed" th:value="${pm.getIdPrixMed()}">
-                          <button type="submit" class="btn btn-danger">Supprimer</button>
+                          <button type="button" class="btn btn-icon btn-outline-danger">
+                            <i class="bx bx-trash-alt"></i>
+                          </button>
                       </div>
                     </td>
                   </tr>

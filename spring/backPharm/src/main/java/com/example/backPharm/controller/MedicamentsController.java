@@ -10,8 +10,10 @@ import com.example.backPharm.service.MedicamentsService;
 import com.example.backPharm.service.PatientService;
 import com.example.backPharm.service.PrixMedService;
 import com.example.backPharm.service.TypeMedicamentService;
+import java.time.LocalDate;
 import java.sql.Date;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +40,18 @@ public class MedicamentsController {
     @GetMapping("/")
     public String getAll(Model model) {
         model.addAttribute("medicaments", medicamentsService.findAll());
+        model.addAttribute("formes", formeService.findAll());
+        model.addAttribute("typeMeds", typeMedService.findAll());
+        model.addAttribute("maladies", maladieService.findAll());
+        model.addAttribute("patients", patientService.findAll());
+        model.addAttribute("body", "medicaments/liste");
+        return "layout";
+    }
+    
+    @GetMapping("/filterbyforme")
+    public String getAllFilteredByForme(@RequestParam("idForme") Integer idForme, Model model) {
+        model.addAttribute("medicaments", medicamentsService.findAllByForme(idForme));
+        model.addAttribute("formes", formeService.findAll());
         model.addAttribute("typeMeds", typeMedService.findAll());
         model.addAttribute("maladies", maladieService.findAll());
         model.addAttribute("patients", patientService.findAll());
@@ -46,8 +60,9 @@ public class MedicamentsController {
     }
     
     @GetMapping("/filterbytype")
-    public String getAllFilteredAZ(@RequestParam("idTypeMed") Integer idtype, Model model) {
+    public String getAllFilteredByType(@RequestParam("idTypeMed") Integer idtype, Model model) {
         model.addAttribute("medicaments", medicamentsService.findAllByTypeMedicament(idtype));
+        model.addAttribute("formes", formeService.findAll());
         model.addAttribute("typeMeds", typeMedService.findAll());
         model.addAttribute("maladies", maladieService.findAll());
         model.addAttribute("patients", patientService.findAll());
@@ -58,6 +73,7 @@ public class MedicamentsController {
     @GetMapping("/filterasc")
     public String getAllFilteredAZ(Model model) {
         model.addAttribute("medicaments", medicamentsService.findAllByNameOrderAsc());
+        model.addAttribute("formes", formeService.findAll());
         model.addAttribute("typeMeds", typeMedService.findAll());
         model.addAttribute("maladies", maladieService.findAll());
         model.addAttribute("patients", patientService.findAll());
@@ -68,6 +84,7 @@ public class MedicamentsController {
     @GetMapping("/filterdesc")
     public String getAllFilteredZA(Model model) {
         model.addAttribute("medicaments", medicamentsService.findAllByNameOrderDesc());
+        model.addAttribute("formes", formeService.findAll());
         model.addAttribute("typeMeds", typeMedService.findAll());
         model.addAttribute("maladies", maladieService.findAll());
         model.addAttribute("patients", patientService.findAll());
@@ -79,6 +96,7 @@ public class MedicamentsController {
     @GetMapping("/search")
     public String search(@RequestParam("idMaladie") Integer idMaladie, @RequestParam("idPatient") Integer idPatient, Model model) {
         model.addAttribute("medicaments", medicamentsService.findMedicamentsByMaladieAndPatient(idMaladie, idPatient));
+        model.addAttribute("formes", formeService.findAll());
         model.addAttribute("typeMeds", typeMedService.findAll());
         model.addAttribute("maladies", maladieService.findAll());
         model.addAttribute("patients", patientService.findAll());

@@ -14,6 +14,10 @@ public class PrixMedService {
     @Autowired
     private PrixMedRepository prixMedRepository;
 
+    // public List<PrixMed> findAllByOrderDatePrixDesc() {
+    //     return prixMedRepository.findAllByOrderDatePrixDesc();
+    // }
+
     public PrixMed getLatestPrixForMedicament(Integer idMed) {
         return prixMedRepository.findLatestPrixByMedicament(idMed);
     }

@@ -52,15 +52,20 @@ public class PrixMedController {
         
         Optional<Medicaments> med = medService.findById(idMed);
         
-        if (!med.isPresent()) {
-            redirectAttributes.addFlashAttribute("error", "Error : Médicamets introuvable..");
+        if (montant > 0) {
+            if (!med.isPresent()) {
+            redirectAttributes.addFlashAttribute("error", "Error : Médicamet introuvable..");
+            }
+            else {
+                pm.setMedicament(med.get());
+                pm.setDatePrix(new Date(System.currentTimeMillis()));
+                pm.setMontant(montant);
+                prixMedService.save(pm);
+                redirectAttributes.addFlashAttribute("success1", "Nouveau prix ajouté avec succès.");
+            }
         }
         else {
-            pm.setMedicament(med.get());
-            pm.setDatePrix(new Date(System.currentTimeMillis()));
-            pm.setMontant(montant);
-            prixMedService.save(pm);
-            redirectAttributes.addFlashAttribute("success1", "Nouveau prix ajouter avec succès.");
+            redirectAttributes.addFlashAttribute("error", "Le montant doit être supérieur à 0.");
         }
         return "redirect:/medicaments/detail/"+idMed;
     }

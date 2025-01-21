@@ -26,6 +26,10 @@ public class MouvementStock {
     @JoinColumn(name = "id_type_mvt_stock", nullable = false)
     private TypeMvtStock typeMouvementStock;
 
+    @ManyToOne
+    @JoinColumn(name = "id_client")
+    private Client client;
+
     
     public MouvementStock() {}
     public MouvementStock(Date dateMvtStock, Integer quantite, Medicaments medicament,
@@ -76,6 +80,11 @@ public class MouvementStock {
     public void setTypeMouvementStock(TypeMvtStock typeMouvementStock) {
         this.typeMouvementStock = typeMouvementStock;
     }
-    
+    public Client getClient() {
+        return client;
+    }
+    public void setClient(Client client) {
+        this.client = client;
+    }
 }
 

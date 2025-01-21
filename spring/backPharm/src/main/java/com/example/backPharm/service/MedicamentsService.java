@@ -13,9 +13,12 @@ public class MedicamentsService {
     @Autowired
     private MedicamentsRepository medicamentsRepository;
 
-
-    public List<Medicaments> findAllByTypeMedicament(Integer id) {
-        return medicamentsRepository.findAllByTypeMedicament_IdTypeMed(id);
+    public List<Medicaments> findAllByTypeMedicament(Integer idtype) {
+        return medicamentsRepository.findAllByTypeMedicament_IdTypeMed(idtype);
+    }
+    
+    public List<Medicaments> findAllByForme(Integer idforme) {
+        return medicamentsRepository.findAllByForme_IdForme(idforme);
     }
 
     public List<Medicaments> findMedicamentsByMaladieAndPatient(Integer idMal, Integer idPat) {

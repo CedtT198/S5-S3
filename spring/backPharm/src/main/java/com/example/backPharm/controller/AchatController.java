@@ -1,9 +1,12 @@
 package com.example.backPharm.controller;
 
+import com.example.backPharm.model.MouvementStock;
+import com.example.backPharm.model.TypeMvtStock;
 import com.example.backPharm.service.FormeService;
 import com.example.backPharm.service.PatientService;
+import com.example.backPharm.service.MedicamentsService;
 import com.example.backPharm.service.MouvementStockService;
-import java.sql.Date;
+import com.example.backPharm.service.TypeMvtStockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,11 +14,15 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequestMapping("/mouvementStock")
-public class MouvementStockController {
+@RequestMapping("/achats")
+public class AchatController {
 
     @Autowired
     private MouvementStockService mouvementStockService;
+    @Autowired
+    private MedicamentsService medicamentsService;
+    @Autowired
+    private TypeMvtStockService typeMvtStockService;
     @Autowired
     private FormeService formeService;
     @Autowired
@@ -24,45 +31,37 @@ public class MouvementStockController {
     // Afficher la liste de tous les mouvements de stock
     @GetMapping("/liste")
     public String getAll(Model model) {
-        model.addAttribute("mouvementStocks", mouvementStockService.findAll());
+        model.addAttribute("mouvementStocks", mouvementStockService.findAllByTypeMvtStock(1));
         model.addAttribute("formes", formeService.findAll());
         model.addAttribute("patients", patientService.findAll());
-        model.addAttribute("body", "mvtStock/liste");
+        model.addAttribute("body", "achats/liste");
         return "layout";
     }
 
-    @GetMapping("/filter")
-    public String getAll(@RequestParam("idType") Integer id, Model model) {
-        model.addAttribute("mouvementStocks", mouvementStockService.findAllByTypeMvtStock(id));
-        model.addAttribute("formes", formeService.findAll());
-        model.addAttribute("patients", patientService.findAll());
-        model.addAttribute("body", "mvtStock/liste");
-        return "layout";
-    }
-    
-    @GetMapping("/search_by_forme_patient")
-    public String searcInjectableForKids(@RequestParam("idForme") Integer idForme, @RequestParam("idPatient") Integer idPatient, Model model) {
-        model.addAttribute("mouvementStocks", mouvementStockService.findSoldMedicamentByFormePatient(idForme, idPatient));
-        model.addAttribute("patients", patientService.findAll());
-        model.addAttribute("formes", formeService.findAll());
-        model.addAttribute("body", "mvtStock/liste");
-        return "layout";
-    }
-    
-    @GetMapping("/search_by_dates")
-    public String searcInjectableForKids(@RequestParam("date") Date date, Model model) {
-        model.addAttribute("mouvementStocks", mouvementStockService.findSoldMedicamentByDate(date));
-        model.addAttribute("patients", patientService.findAll());
-        model.addAttribute("formes", formeService.findAll());
-        model.addAttribute("body", "mvtStock/liste");
+    // Afficher le formulaire de création d'un mouvement de stock
+    @GetMapping("/new")
+    public String createForm(Model model) {
+        model.addAttribute("mouvementStock", new MouvementStock());
+        model.addAttribute("medicaments", medicamentsService.findAll());
+        model.addAttribute("body", "achats/insert");
         return "layout";
     }
 
-    @GetMapping("/reste_stock")
-    public String getAllResteStock(Model model) {
-        model.addAttribute("stocks", mouvementStockService.remainingStockByMed());
-        model.addAttribute("body", "mvtStock/reste");
-        return "layout";
+    // Sauvegarder un nouveau mouvement de stock
+    @PostMapping("/save")
+    public String save(@ModelAttribute MouvementStock mouvementStock, RedirectAttributes redirectAttributes) {
+        TypeMvtStock tms = typeMvtStockService.findById(1).get();
+        mouvementStock.setTypeMouvementStock(tms);
+        mouvementStock.setClient(null);
+
+        if (mouvementStock.getQuantite() <= 0) {
+            redirectAttributes.addFlashAttribute("error", "Quantité ne doit pas être inférieur à 0. Insertion annulée.");
+        }
+        else {
+            mouvementStockService.save(mouvementStock);
+            redirectAttributes.addFlashAttribute("success", "Insertion effectuée avec succès.");
+        }
+        return "redirect:/achats/new";
     }
 
     // Afficher le formulaire de mise à jour d'un mouvement de stock
@@ -84,6 +83,6 @@ public class MouvementStockController {
     public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         mouvementStockService.delete(id);
         redirectAttributes.addFlashAttribute("success", "Suppression effectuée avec succès.");
-        return "redirect:/mouvementStock/liste";
+        return "redirect:/achats/liste";
     }
 }

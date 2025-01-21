@@ -1,4 +1,4 @@
-<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Achat(s)</span></h4>
+<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Entreprise / Achats / </span>Ajouter</h4>
 <div class="row">
     <!-- Basic with Icons -->
     <div class="col-xxl">
@@ -7,7 +7,7 @@
           <small class="text-muted float-end">Merged input group</small>
         </div>
         <div class="card-body col-md-11">
-          <form th:action="@{/mouvementStock/saveachat}" method="post" th:object="${mouvementStock}">
+          <form th:action="@{/achats/save}" method="post" th:object="${mouvementStock}">
             <div class="row mb-3">
               <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Date</label>
               <div class="col-sm-10">

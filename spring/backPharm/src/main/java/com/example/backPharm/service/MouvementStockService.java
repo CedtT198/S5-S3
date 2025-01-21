@@ -4,6 +4,8 @@ import com.example.backPharm.model.MouvementStock;
 import com.example.backPharm.repository.MouvementStockRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +14,10 @@ public class MouvementStockService {
 
     @Autowired
     private MouvementStockRepository mouvementStockRepository;
+    
+    public List<MouvementStock> findSoldMedicamentByDate(Date date) {
+        return mouvementStockRepository.findByDateMvtStock(date);
+    }
 
     public int calculateStockDifference(Integer idMed) {
         return mouvementStockRepository.totalInputByMed(idMed) - mouvementStockRepository.totalOutputByMed(idMed) ;
@@ -24,10 +30,15 @@ public class MouvementStockService {
     public List<MouvementStock> findAllByTypeMvtStock(Integer id) {
         return mouvementStockRepository.findAllByTypeMouvementStock_IdTypeMvtStock(id);
     }
+
+    public List<MouvementStock> findSoldMedicamentByFormePatient(Integer idForme, Integer idPatient) {
+        return mouvementStockRepository.findSoldMedicamentByFormePatient(idForme, idPatient);
+    }
     
     // Trouver tous les mouvements de stock
     public List<MouvementStock> findAll() {
-        return mouvementStockRepository.findAll();
+        // return mouvementStockRepository.findAll();
+        return mouvementStockRepository.findAllByOrderByDateMvtStockDesc();
     }
 
     // Trouver un mouvement de stock par son ID

@@ -1,4 +1,4 @@
-<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Vente(s)</h4>
+<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Entreprise / Ventes / </span>Ajouter</h4>
 <div class="row">
     <!-- Basic with Icons -->
     <div class="col-xxl">
@@ -7,7 +7,7 @@
           <small class="text-muted float-end">Merged input group</small>
         </div>
         <div class="card-body col-md-11">
-          <form th:action="@{/mouvementStock/savevente}" method="post" th:object="${mouvementStock}">
+          <form th:action="@{/ventes/save}" method="post" th:object="${mouvementStock}">
             <div class="row mb-3">
               <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Date</label>
               <div class="col-sm-10">
@@ -27,7 +27,7 @@
                 <div class="input-group input-group-merge">
                   <select class="form-control" th:field="*{medicament}" required>
                       <option th:each="med : ${medicaments}" th:value="${med.getid_med()}">
-                      <p th:text="${med.getnom_med()}"></p>
+                      <p th:text="${med.getnom_med()} + ' / ' + ${med.getForme().getNomForme()}"></p>
                   </select>
                 </div>
               </div>
@@ -37,6 +37,17 @@
               <div class="col-sm-10">
                 <div class="input-group input-group-merge">
                   <input type="number" class="form-control" th:field="*{quantite}" required/>
+                </div>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label class="col-sm-2 col-form-label" for="basic-icon-default-email">Client</label>
+              <div class="col-sm-10">
+                <div class="input-group input-group-merge">
+                  <select class="form-control" th:field="*{client.idClient}" required>
+                    <option th:each="c : ${clients}" th:value="${c.getIdClient()}">
+                    <p th:text="${c.getNomClient()}"></p>
+                </select>
                 </div>
               </div>
             </div>
